@@ -1,0 +1,28 @@
+body {
+  background-color: #0d1117;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.chat-window {
+  background: linear-gradient(to bottom right, #1f2735, #2b3a55);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+input.form-control {
+  background-color: #1c1c1c;
+  color: white;
+  border: none;
+}
+
+input.form-control::placeholder {
+  color: #888;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Interface</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        #chat-box {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        .user {
+            text-align: right;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .bot {
+            text-align: left;
+            margin-bottom: 10px;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container chat-container">
+        <h4 class="text-center mb-4">Chat with AI</h4>
+        <div id="chat-box"></div>
+        <div class="input-group">
+            <input type="text" id="user-input" class="form-control" placeholder="Type a message..." />
+            <div class="input-group-append">
+                <button id="send-btn" class="btn btn-primary" type="button">💬 Ask</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            const chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<div class="user"><strong>You:</strong> ${userInput}</div>`;
+
+            fetch("/get", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "msg=" + encodeURIComponent(userInput)
+            })
+            .then(response => response.text())
+            .then(data => {
+                chatBox.innerHTML += `<div class="bot"><strong>Bot:</strong> ${data}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+
+            document.getElementById("user-input").value = "";
+        }
+
+        // Send on button click
+        document.getElementById("send-btn").addEventListener("click", sendMessage);
+
+        // Send on pressing Enter
+        document.getElementById("user-input").addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
